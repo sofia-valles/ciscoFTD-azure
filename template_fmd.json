@@ -1,0 +1,875 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Deployment location"
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "defaultValue": "FTDv_Network",
+            "metadata": {
+                "description": "Virtual Network name"
+            }
+        },
+        "virtualNetworkRG": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Identifies the Resource Group of the Virtual Network"
+            }
+        },
+        "virtualNetworkAddressPrefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Virtual Network Address prefix"
+            }
+        },
+        "virtualNetworkNewOrExisting": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Identifies whether to use new or existing Virtual Network"
+            }
+        },
+        "Subnet1Prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 1 Prefix"
+            }
+        },
+        "Subnet1Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 1 Name"
+            }
+        },
+        "subnet1StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 1 Starting IP Address"
+            }
+        },
+        "Subnet2Prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 2 Prefix"
+            }
+        },
+        "Subnet2Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 2 Name"
+            }
+        },
+        "subnet2StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 2 Starting IP Address"
+            }
+        },
+        "Subnet3Prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 3 Prefix"
+            }
+        },
+        "Subnet3Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 3 Name"
+            }
+        },
+        "subnet3StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 3 Starting IP Address"
+            }
+        },
+        "Subnet4Prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 4 Prefix"
+            }
+        },
+        "Subnet4Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 4 Name"
+            }
+        },
+        "subnet4StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 4 Starting IP Address"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "sshPublicKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "SSH Key for the virtual machines"
+            }
+        },
+        "authenticationType": {
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "password",
+                "sshPublicKey"
+            ],
+            "metadata": {
+                "description": "Authentication Type to chose for the Virtual Machines"
+            }
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "FTDv",
+            "metadata": {
+                "description": "Name for the Virtual Machine."
+            }
+        },
+        "billingType": {
+            "type": "string",
+            "defaultValue": "ftdv-azure-byol",
+            "allowedValues": [
+                "ftdv-azure-byol",
+                "ftdv-azure-payg"
+            ],
+            "metadata": {
+                "description": "Billing type to use."
+            }
+        },
+        "softwareVersionByol": {
+            "type": "string",
+            "defaultValue": "67065.0.0",
+            "allowedValues": [
+                "67065.0.0",
+                "66191.0.0",
+                "640110.0.0"
+            ],
+            "metadata": {
+                "description": "Software version to use."
+            }
+        },
+        "softwareVersionPayg": {
+            "type": "string",
+            "defaultValue": "67065.0.0",
+            "allowedValues": [
+                "67065.0.0",
+                "66191.0.0",
+                "650115.0.0"
+            ],
+            "metadata": {
+                "description": "Software version to use."
+            }
+        },
+        "ftdAdminPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Passowrd for 'admin' user on FTDv"
+            }
+        },
+        "manageLocally": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Select whether to manage FTDv locally or not."
+            }
+        },
+        "fmcDetails": {
+            "type": "string",
+            "defaultValue": "No",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Select whether to provide FMC registration info or not."
+            }
+        },
+        "fmcIp": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Enter the FMC IP/Hostname"
+            }
+        },
+        "fmcRegKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Enter the key to be used for registration"
+            }
+        },
+        "fmcNatId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Enter the NAT ID to be used during registration (optional)"
+            }
+        },
+        "storageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique Name for Storage Account where the Virtual Machine's disks will be placed."
+            }
+        },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS"
+            ],
+            "metadata": {
+                "description": "The type of storage account created."
+            }
+        },
+        "storageAccountNewOrExisting": {
+            "type": "string",
+            "defaultValue": "new",
+            "allowedValues": [
+                "new",
+                "existing"
+            ],
+            "metadata": {
+                "description": "Identifies whether to use new or existing Storage Account"
+            }
+        },
+        "storageAccountRG": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Resource Group containing existing storage account"
+            }
+        },
+        "publicIPAddressName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the Public IP Address"
+            }
+        },
+        "publicIPDnsLabel": {
+            "type": "string",
+            "defaultValue": "FTDvdns",
+            "metadata": {
+                "description": "Unique DNS Prefix for the Public IP used to access the Virtual Machine."
+            }
+        },
+        "publicIPAllocationMethod": {
+            "type": "string",
+            "defaultValue": "Static",
+            "allowedValues": [
+                "Static",
+                "Dynamic"
+            ],
+            "metadata": {
+                "description": "Indicates whether the public IP is fixed or may change on each stop/start"
+            }
+        },
+        "publicIPsku": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ],
+            "metadata": {
+                "description": "Indicates whether the public IP will be of Basic SKU or Standard SKU"
+            }
+        },
+        "publicIPNewOrExisting": {
+            "type": "string",
+            "defaultValue": "new",
+            "allowedValues": [
+                "new",
+                "existing"
+            ],
+            "metadata": {
+                "description": "Indicates whether the Public IP is new or existing"
+            }
+        },
+        "publicIPRG": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Resource Group of the public IP"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "allowedValues": [
+                "Standard_D3",
+                "Standard_D3_v2"
+            ],
+            "metadata": {
+                "description": "Size of the Virtual Machine"
+            }
+        },
+        "vmLargerSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "allowedValues": [
+                "Standard_D3",
+                "Standard_D3_v2",
+                "Standard_D4_v2",
+                "Standard_D5_v2"
+            ],
+            "metadata": {
+                "description": "Size of the Virtual Machine"
+            }
+        }
+    },
+    "variables": {
+        "imagePublisher": "cisco",
+        "imageOffer": "cisco-ftdv",
+        "imageSKU": "[parameters('billingType')]",
+        "subnet1Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet1Name'))]",
+        "subnet2Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet2Name'))]",
+        "subnet3Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet3Name'))]",
+        "subnet4Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet4Name'))]",
+        "routeTable1Name": "[concat(parameters('Subnet1Name'),'-FTDv-RouteTable')]",
+        "routeTable2Name": "[concat(parameters('Subnet2Name'),'-FTDv-RouteTable')]",
+        "routeTable3Name": "[concat(parameters('Subnet3Name'),'-FTDv-RouteTable')]",
+        "routeTable4Name": "[concat(parameters('Subnet4Name'),'-FTDv-RouteTable')]",
+        "routeTable1Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable1Name'))]",
+        "routeTable2Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable2Name'))]",
+        "routeTable3Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable3Name'))]",
+        "routeTable4Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable4Name'))]",
+        "mgtNsgName": "[concat(parameters('vmName'),'-SSH-SecurityGroup')]",
+        "dataNsgName": "[concat(parameters('vmName'),'-Data-Net-SecurityGroup')]",
+        "hostname": "[tolower(parameters('vmName'))]",
+        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+        "swVersionEffective": "[if(equals(parameters('billingType'), 'ftdv-azure-byol'), parameters('softwareVersionByol'), parameters('softwareVersionPayg'))]",
+        "prefixSwVerEffective": "[if(equals(parameters('billingType'), 'ftdv-azure-byol'), substring(parameters('softwareVersionByol'),0,2), substring(parameters('softwareVersionPayg'),0,2))]",
+        "vmSizeEffective": "[if(contains('62-63-64', variables('prefixSwVerEffective')), parameters('vmSize'), parameters('vmLargerSize'))]",
+        "enableAccelNet": "[if(contains('62-63-64-65-66', variables('prefixSwVerEffective')), bool('false'), bool('true'))]",
+        "commonCustomData": "[concat('\"AdminPassword\":\"', parameters('ftdAdminPassword'), '\",\"Hostname\":\"', variables('hostname'),'\"')]",
+        "fmcRegCustomData": "[concat('\"FmcIp\":\"', parameters('fmcIp'), '\",\"FmcRegKey\":\"', parameters('fmcRegKey'),'\",\"FmcNatId\":\"', parameters('fmcNatId'),'\"')]",
+        "effectiveFmcRegCustomData": "[if(equals(parameters('fmcDetails'), 'Yes'), variables('fmcRegCustomData'), '\"FmcIp\":\"\"')]",
+        "customDataFdm": "[concat('{\"ManageLocally\":\"Yes\",', variables('commonCustomData'),'}')]",
+        "customDataFmc": "[concat('{', variables('commonCustomData'), ',', variables('effectiveFmcRegCustomData'),'}')]",
+        "effectiveManageLocally": "[if(and(equals(parameters('manageLocally'),'Yes'),equals(parameters('billingType'), 'ftdv-azure-byol'), not(contains('62-63-64', variables('prefixSwVerEffective')))), 'Yes', 'No')]",
+        "customData": "[if(equals(variables('effectiveManageLocally'),'Yes'), variables('customDataFdm'), variables('customDataFmc'))]",
+        "fdmRuleName": "Https-Rule",
+        "fmcRuleName": "SFtunnel-Rule",
+        "fdmRuleDesc": "Allow HTTPS",
+        "fmcRuleDesc": "Allow SFTunnel",
+        "fdmRulePort": "443",
+        "fmcRulePort": "8305",
+        "osProfilesshPublicKey": {
+            "computername": "[variables('hostname')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "linuxConfiguration": {
+                "disablePasswordAuthentication": "true",
+                "ssh": {
+                    "publicKeys": [
+                        {
+                            "path": "[variables('sshKeyPath')]",
+                            "keyData": "[parameters('sshPublicKey')]"
+                        }
+                    ]
+                }
+            },
+            "customData": "[base64(variables('customData'))]"
+        },
+        "osProfilepassword": {
+            "computername": "[variables('hostname')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]",
+            "customData": "[base64(variables('customData'))]"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-06-01",
+            "name": "pid-be865a1c-21a3-5346-ab2e-a105473ba7c1",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('storageAccountName'))]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "condition": "[equals(parameters('storageAccountNewOrExisting'),'new')]",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "kind": "Storage",
+            "location": "[parameters('location')]",
+            "properties": {}
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "condition": "[equals(parameters('publicIPNewOrExisting'),'new')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddressName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "[parameters('publicIPsku')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('publicIPDnsLabel')]"
+                },
+                "idleTimeoutInMinutes": 30
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('mgtNsgName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "SSH-Rule",
+                        "properties": {
+                            "description": "Allow SSH",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "[if(equals(variables('effectiveManageLocally'),'Yes'), variables('fdmRuleName'), variables('fmcRuleName'))]",
+                        "properties": {
+                            "description": "[if(equals(variables('effectiveManageLocally'),'Yes'), variables('fdmRuleDesc'), variables('fmcRuleDesc'))]",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "[if(equals(variables('effectiveManageLocally'),'Yes'), variables('fdmRulePort'), variables('fmcRulePort'))]",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 110,
+                            "direction": "Inbound"
+                        }
+                    },
+					{
+                        "name": "allow",
+                        "properties": {
+                            "description": "Allow",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "81.245.46.248",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 120,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('dataNsgName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "UDP-Rule1",
+                        "properties": {
+                            "description": "Allow UDP",
+                            "protocol": "Udp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "500",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 120,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "UDP-Rule2",
+                        "properties": {
+                            "description": "Allow UDP",
+                            "protocol": "Udp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "4500",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 130,
+                            "direction": "Inbound"
+                        }
+                    },
+					{
+                        "name": "allow",
+                        "properties": {
+                            "description": "Allow",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "81.245.46.248",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 140,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet1Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet2Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet3Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "Route-Subnet4-To-FTDv",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet4Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet3StartAddress')]"
+                        }
+                    },
+					{
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet3StartAddress')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet4Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "Route-Subnet3-To-FTDv",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet3Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet4StartAddress')]"
+                        }
+                    },
+					{
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet4StartAddress')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-04-01",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable4Name'))]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('virtualNetworkAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('Subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet1Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable1Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet2Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable2Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet3Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet3Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable3Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet4Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet4Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable4Id')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic0')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/',variables('mgtNsgName'))]",
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('subnet1StartAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnet1Ref')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId(parameters('publicIPRG'),'Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('mgtNsgName'))]"
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic1')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('subnet2StartAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnet2Ref')]"
+                            }
+                        }
+                    }
+                ],
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic2')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/',variables('dataNsgName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('subnet3StartAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnet3Ref')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('dataNsgName'))]"
+                },
+                "enableAcceleratedNetworking": "[variables('enableAccelNet')]",
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic3')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/',variables('dataNsgName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('subnet4StartAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnet4Ref')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('dataNsgName'))]"
+                },
+                "enableAcceleratedNetworking": "[variables('enableAccelNet')]",
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('vmName')]",
+            "location": "[parameters('location')]",
+            "plan": {
+                "name": "[variables('imageSKU')]",
+                "publisher": "[variables('imagePublisher')]",
+                "product": "[variables('imageOffer')]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic0')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic1')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic2')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic3')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSizeEffective')]"
+                },
+                "osProfile": "[if(equals(parameters('authenticationType'),'password'), variables('osProfilepassword'), variables('osProfilesshPublicKey'))]",
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imagePublisher')]",
+                        "offer": "[variables('imageOffer')]",
+                        "sku": "[variables('imageSKU')]",
+                        "version": "[variables('swVersionEffective')]"
+                    },
+                    "osDisk": {
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "properties": {
+                                "primary": true
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic0'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic1'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic2'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic3'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageuri": "[reference(resourceId(parameters('storageAccountRG'), 'Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), '2019-06-01').primaryEndpoints.blob]"
+                    }
+                }
+            }
+        }
+    ]
+}
