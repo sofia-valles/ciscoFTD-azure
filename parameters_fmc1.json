@@ -15,7 +15,7 @@
             "value": "sofia-valles"
         },
         "FMCAdminPassword": {
-            "value": "Peetuhpanthen0l_75"
+            "value": null
         },
         "NTPServer1": {
             "value": ""
@@ -24,7 +24,7 @@
             "value": ""
         },
         "adminPassword": {
-            "value": "Peetuhpanthen0l_75"
+            "value": null
         },
         "authenticationType": {
             "value": "password"
@@ -48,7 +48,7 @@
             "value": "fmc-ip"
         },
         "publicIPDnsLabel": {
-            "value": "fmc-29a38c79f4"
+            "value": "fmc-d7897ed8a7"
         },
         "publicIPNewOrExisting": {
             "value": "new"
@@ -57,7 +57,7 @@
             "value": "RG_Sofia.Valles"
         },
         "publicIPAllocationMethod": {
-            "value": "Static"
+            "value": "Dynamic"
         },
         "publicIPsku": {
             "value": "Basic"
@@ -66,22 +66,22 @@
             "value": "CiscoFTDVNet"
         },
         "virtualNetworkAddressPrefix": {
-            "value": "10.6.0.0/16"
+            "value": "10.13.0.0/16"
         },
         "virtualNetworkNewOrExisting": {
-            "value": "existing"
+            "value": "new"
         },
         "virtualNetworkRG": {
             "value": "RG_Sofia.Valles"
         },
         "Subnet1Name": {
-            "value": "FMCsubnet"
+            "value": "subnet1"
         },
         "Subnet1Prefix": {
-            "value": "10.6.0.0/24"
+            "value": "10.13.0.0/24"
         },
         "subnet1StartAddress": {
-            "value": "10.6.0.4"
+            "value": "10.13.0.4"
         }
     }
 }
