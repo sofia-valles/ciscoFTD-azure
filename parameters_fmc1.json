@@ -57,7 +57,7 @@
             "value": "RG_Sofia.Valles"
         },
         "publicIPAllocationMethod": {
-            "value": "Dynamic"
+            "value": "Static"
         },
         "publicIPsku": {
             "value": "Basic"

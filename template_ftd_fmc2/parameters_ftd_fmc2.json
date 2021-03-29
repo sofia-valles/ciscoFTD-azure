@@ -1,0 +1,105 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "virtualNetworkName": {
+      "value": "CiscoFTDVNet"
+    },
+    "virtualNetworkRG": {
+      "value": "RG_Sofia.Valles"
+    },
+    "virtualNetworkAddressPrefix": {
+      "value": "10.13.0.0/16"
+    },
+    "virtualNetworkNewOrExisting": {
+      "value": "existing"
+    },
+    "Subnet1Prefix": {
+      "value": "10.13.1.0/24"
+    },
+    "Subnet1Name": {
+      "value": "management"
+    },
+    "subnet1StartAddress": {
+      "value": "10.13.1.4"
+    },
+    "Subnet2Prefix": {
+      "value": "10.13.2.0/24"
+    },
+    "Subnet2Name": {
+      "value": "diagnostic"
+    },
+    "subnet2StartAddress": {
+      "value": "10.13.2.4"
+    },
+    "Subnet3Prefix": {
+      "value": "10.13.3.0/24"
+    },
+    "Subnet3Name": {
+      "value": "outside"
+    },
+    "subnet3StartAddress": {
+      "value": "10.13.3.4"
+    },
+    "Subnet4Prefix": {
+      "value": "10.13.4.0/24"
+    },
+    "Subnet4Name": {
+      "value": "inside"
+    },
+    "subnet4StartAddress": {
+      "value": "10.13.4.4"
+    },
+    "adminUsername": {
+      "value": "sofia-valles"
+    },
+    "adminPassword": {
+      "value": "Peetuhpanthen0l_75"
+    },
+    "sshPublicKey": {
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDDBRr5TONz6aeJbDtfo3h2i1GIArGDaRuMGrW+BbiNqWLzo28UjFmPlxzmYrJytJQJGsLOntvRAWk8mURAQd/9wQXrAa/yMuvisdV9Q3DnjdzAI4T0tafq/usbNcKmmvCmaQpHN71UC7moDfecDDZH3BpddPpU9ufSo4Mx9O+uwHKUvw/e6kSveaD0IXVlD/VCVAu+Bsfc/IA9fiaDDn05kJp9G+Nyi2yMVLoa3ewRQGpoxH7RakhgvEJz1XgeF1dmJ1qLRWIk8ufx3ONv5FelsNyIrg0of/AIKN0AXTDAX22DT4VK6mbcEAEJo7EeLiDVCAR/OjN8ROFakngOHL6ILB+HpSHfNZxomcj+NMp78HVOdF1ZBUqJ0/0EgTithyMOZNzL1CpfSOxMSXHI0j6C3y4IJawZWQi8agioP7bBbhDvECMz9SOa6s7qxAjU98MpgbKvTHK/5m0/HHgNdEPBjP09M61rEPN6e6Tx1qVG6Qt7U6M52d9qICZmmZQi2is4mQt0OTRwfvSciELb4mV+GIhEAwYPNeSODqnUJPdNLrlD5RWG4wYS4eTw0FpCBO4Phbsw5SIwCdIPXt1Y1Y5cDltsQuEQzc3+qoXCgOp2HpIAequQvWhzW4XayX67dOnsSzqfAN+Ua/MmrRvNjvvwwWJ96XdiTE1zizslxglfnQ== gsinet\\valless@DCI5CG7213734\n"
+    },
+    "authenticationType": {
+      "value": "password"
+    },
+    "vmName": {
+      "value": "ciscoFTD"
+    },
+    "billingType": {
+      "value": "ftdv-azure-payg"
+    },
+    "ftdAdminPassword": {
+      "value": "Peetuhpanthen0l_75"
+    },
+    "manageLocally": {
+      "value": "No"
+    },
+    "fmcDetails": {
+      "value": "Yes"
+    },
+    "fmcIp": {
+      "value": "10.13.0.4"
+    },
+    "fmcRegKey": {
+      "value": "regsleutel"
+    },
+    "storageAccountName": {
+      "value": "rgsofiavalles"
+    },
+    "storageAccountRG": {
+      "value": "RG_Sofia.Valles"
+    },
+    "publicIPAddressName": {
+      "value": "ciscoftd-ip"
+    },
+    "publicIPDnsLabel": {
+      "value": "ciscoftd-1a396dc4ee"
+    },
+    "publicIPRG": {
+      "value": "RG_Sofia.Valles"
+    }
+  }
+}

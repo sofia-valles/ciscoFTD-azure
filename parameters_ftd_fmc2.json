@@ -12,46 +12,46 @@
             "value": "RG_Sofia.Valles"
         },
         "virtualNetworkAddressPrefix": {
-            "value": "10.6.0.0/16"
+            "value": "10.13.0.0/16"
         },
         "virtualNetworkNewOrExisting": {
             "value": "existing"
         },
-        "Subnet1Prefix": {
-            "value": "10.6.0.0/24"
+        "subnet2Prefix": {
+            "value": "10.13.1.0/24"
         },
-        "Subnet1Name": {
-            "value": "subnet1"
-        },
-        "subnet1StartAddress": {
-            "value": "10.6.0.5"
-        },
-        "Subnet2Prefix": {
-            "value": "10.6.1.0/24"
-        },
-        "Subnet2Name": {
-            "value": "subnet2"
+        "subnet2Name": {
+            "value": "management"
         },
         "subnet2StartAddress": {
-            "value": "10.6.1.4"
+            "value": "10.13.1.4"
         },
-        "Subnet3Prefix": {
-            "value": "10.6.2.0/24"
+        "subnet3Prefix": {
+            "value": "10.13.2.0/24"
         },
-        "Subnet3Name": {
-            "value": "subnet3"
+        "subnet3Name": {
+            "value": "diagnostic"
         },
         "subnet3StartAddress": {
-            "value": "10.6.2.4"
+            "value": "10.13.2.4"
         },
-        "Subnet4Prefix": {
-            "value": "10.6.3.0/24"
+        "subnet4Prefix": {
+            "value": "10.13.3.0/24"
         },
-        "Subnet4Name": {
-            "value": "subnet4"
+        "subnet4Name": {
+            "value": "outside"
         },
         "subnet4StartAddress": {
-            "value": "10.6.3.4"
+            "value": "10.13.3.4"
+        },
+        "subnet5Prefix": {
+            "value": "10.13.4.0/24"
+        },
+        "subnet5Name": {
+            "value": "inside"
+        },
+        "subnet5StartAddress": {
+            "value": "10.13.4.4"
         },
         "adminUsername": {
             "value": "sofia-valles"
@@ -81,7 +81,7 @@
             "value": "Yes"
         },
         "fmcIp": {
-            "value": "10.6.0.4"
+            "value": "10.13.0.4"
         },
         "fmcRegKey": {
             "value": "regsleutel"
