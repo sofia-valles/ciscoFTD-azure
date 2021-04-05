@@ -36,14 +36,34 @@
                 "description": "Identifies whether to use new or existing Virtual Network"
             }
         },
-        "subnet2Prefix": {
+        "Subnet1Prefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 1 Prefix"
+            }
+        },
+        "Subnet1Name": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Subnet 1 Name"
+            }
+        },
+        "subnet1StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet 1 Starting IP Address"
+            }
+        },
+        "Subnet2Prefix": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Subnet 2 Prefix"
             }
         },
-        "subnet2Name": {
+        "Subnet2Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
@@ -56,14 +76,14 @@
                 "description": "Subnet 2 Starting IP Address"
             }
         },
-        "subnet3Prefix": {
+        "Subnet3Prefix": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Subnet 3 Prefix"
             }
         },
-        "subnet3Name": {
+        "Subnet3Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
@@ -76,14 +96,14 @@
                 "description": "Subnet 3 Starting IP Address"
             }
         },
-        "subnet4Prefix": {
+        "Subnet4Prefix": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Subnet 4 Prefix"
             }
         },
-        "subnet4Name": {
+        "Subnet4Name": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
@@ -94,26 +114,6 @@
             "type": "string",
             "metadata": {
                 "description": "Subnet 4 Starting IP Address"
-            }
-        },
-        "subnet5Prefix": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Subnet 5 Prefix"
-            }
-        },
-        "subnet5Name": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Subnet 5 Name"
-            }
-        },
-        "subnet5StartAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "Subnet 5 Starting IP Address"
             }
         },
         "adminUsername": {
@@ -258,7 +258,7 @@
         },
         "storageAccountNewOrExisting": {
             "type": "string",
-            "defaultValue": "existing",
+            "defaultValue": "new",
             "allowedValues": [
                 "new",
                 "existing"
@@ -357,14 +357,14 @@
         "imagePublisher": "cisco",
         "imageOffer": "cisco-ftdv",
         "imageSKU": "[parameters('billingType')]",
+        "subnet1Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet1Name'))]",
         "subnet2Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet2Name'))]",
         "subnet3Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet3Name'))]",
         "subnet4Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet4Name'))]",
-        "subnet5Ref": "[resourceId(parameters('virtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets/', parameters('virtualNetworkName'), parameters('subnet5Name'))]",
-        "routeTable1Name": "[concat(parameters('subnet2Name'),'-FTDv-RouteTable')]",
-        "routeTable2Name": "[concat(parameters('subnet3Name'),'-FTDv-RouteTable')]",
-        "routeTable3Name": "[concat(parameters('subnet4Name'),'-FTDv-RouteTable')]",
-        "routeTable4Name": "[concat(parameters('subnet5Name'),'-FTDv-RouteTable')]",
+        "routeTable1Name": "[concat(parameters('Subnet1Name'),'-FTDv-RouteTable')]",
+        "routeTable2Name": "[concat(parameters('Subnet2Name'),'-FTDv-RouteTable')]",
+        "routeTable3Name": "[concat(parameters('Subnet3Name'),'-FTDv-RouteTable')]",
+        "routeTable4Name": "[concat(parameters('Subnet4Name'),'-FTDv-RouteTable')]",
         "routeTable1Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable1Name'))]",
         "routeTable2Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable2Name'))]",
         "routeTable3Id": "[resourceId(parameters('virtualNetworkRG'),'Microsoft.Network/routeTables',variables('routeTable3Name'))]",
@@ -494,54 +494,6 @@
                 ]
             }
         },
-		{
-            "type": "Microsoft.Network/routeTables",
-            "name": "[concat(parameters('subnet2Name'),'-FTDv-RouteTable')]",
-            "apiVersion": "2020-04-01",
-            "location": "[parameters('location')]"
-        },
-        {
-            "type": "Microsoft.Network/routeTables",
-            "name": "[concat(parameters('subnet3Name'),'-FTDv-RouteTable')]",
-            "apiVersion": "2020-04-01",
-            "location": "[parameters('location')]"
-        },
-        {
-            "type": "Microsoft.Network/routeTables",
-            "name": "[concat(parameters('subnet4Name'),'-FTDv-RouteTable')]",
-            "apiVersion": "2020-04-01",
-            "location": "[parameters('location')]",
-            "properties": {
-                "routes": [
-                    {
-                        "name": "Route-subnet5-To-FTDv",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnet5Prefix')]",
-                            "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('subnet4StartAddress')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Network/routeTables",
-            "name": "[concat(parameters('subnet5Name'),'-FTDv-RouteTable')]",
-            "apiVersion": "2020-04-01",
-            "location": "[parameters('location')]",
-            "properties": {
-                "routes": [
-                    {
-                        "name": "Route-subnet4-To-FTDv",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnet4Prefix')]",
-                            "nextHopType": "VirtualAppliance",
-                            "nextHopIpAddress": "[parameters('subnet5StartAddress')]"
-                        }
-                    }
-                ]
-            }
-        },
         {
             "apiVersion": "2020-04-01",
             "type": "Microsoft.Network/networkSecurityGroups",
@@ -580,60 +532,123 @@
                 ]
             }
         },
-		{
-			"apiVersion": "2020-04-01",
-			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('Subnet2Name'))]",
-			"location": "[resourceGroup().location]",
-			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"properties": {
-				"addressPrefix": "[parameters('Subnet2Prefix')]",
-                "routeTable": {
-                    "id": "[variables('routeTable1Id')]"
-				}
-			}
-		},
-		{
-			"apiVersion": "2020-04-01",
-			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('Subnet3Name'))]",
-			"location": "[resourceGroup().location]",
-			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"properties": {
-				"addressPrefix": "[parameters('Subnet3Prefix')]",
-                "routeTable": {
-                    "id": "[variables('routeTable2Id')]"
-				}
-			}
-		},
-		{
-			"apiVersion": "2020-04-01",
-			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('Subnet4Name'))]",
-			"location": "[resourceGroup().location]",
-			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"properties": {
-				"addressPrefix": "[parameters('Subnet4Prefix')]",
-                "routeTable": {
-                    "id": "[variables('routeTable3Id')]"
-				}
-			}
-		},
-		{
-			"apiVersion": "2020-04-01",
-			"name": "[concat(parameters('virtualNetworkName'), '/', parameters('Subnet5Name'))]",
-			"location": "[resourceGroup().location]",
-			"type": "Microsoft.Network/virtualNetworks/subnets",
-			"properties": {
-				"addressPrefix": "[parameters('Subnet5Prefix')]",
-                "routeTable": {
-                    "id": "[variables('routeTable4Id')]"
-				}
-			}
-		},
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet1Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet2Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet3Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "Route-Subnet4-To-FTDv",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet4Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet3StartAddress')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/routeTables",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "name": "[concat(parameters('Subnet4Name'),'-FTDv-RouteTable')]",
+            "apiVersion": "2020-04-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "Route-Subnet3-To-FTDv",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet3Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[parameters('subnet4StartAddress')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-04-01",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'),'new')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable1Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable2Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable3Name'))]",
+                "[concat('Microsoft.Network/routeTables/', variables('routeTable4Name'))]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('virtualNetworkAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('Subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet1Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable1Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet2Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable2Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet3Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet3Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable3Id')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "[parameters('Subnet4Name')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('Subnet4Prefix')]",
+                            "routeTable": {
+                                "id": "[variables('routeTable4Id')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
         {
             "apiVersion": "2020-04-01",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(parameters('vmName'),'-nic1')]",
+            "name": "[concat(parameters('vmName'),'-Nic0')]",
             "location": "[parameters('location')]",
             "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
                 "[concat('Microsoft.Network/networkSecurityGroups/',variables('mgtNsgName'))]",
                 "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]"
             ],
@@ -643,9 +658,9 @@
                         "name": "ipconfig1",
                         "properties": {
                             "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "[parameters('subnet2StartAddress')]",
+                            "privateIPAddress": "[parameters('subnet1StartAddress')]",
                             "subnet": {
-                                "id": "[variables('subnet2Ref')]"
+                                "id": "[variables('subnet1Ref')]"
                             },
                             "publicIPAddress": {
                                 "id": "[resourceId(parameters('publicIPRG'),'Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
@@ -663,8 +678,37 @@
         {
             "apiVersion": "2020-04-01",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(parameters('vmName'),'-nic2')]",
+            "name": "[concat(parameters('vmName'),'-Nic1')]",
             "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('subnet2StartAddress')]",
+                            "subnet": {
+                                "id": "[variables('subnet2Ref')]"
+                            }
+                        }
+                    }
+                ],
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": true
+            }
+        },
+        {
+            "apiVersion": "2020-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic2')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/',variables('dataNsgName'))]"
+            ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -678,16 +722,20 @@
                         }
                     }
                 ],
-                "enableAcceleratedNetworking": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('dataNsgName'))]"
+                },
+                "enableAcceleratedNetworking": "[variables('enableAccelNet')]",
                 "enableIPForwarding": true
             }
         },
         {
             "apiVersion": "2020-04-01",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(parameters('vmName'),'-nic3')]",
+            "name": "[concat(parameters('vmName'),'-Nic3')]",
             "location": "[parameters('location')]",
             "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
                 "[concat('Microsoft.Network/networkSecurityGroups/',variables('dataNsgName'))]"
             ],
             "properties": {
@@ -711,34 +759,6 @@
             }
         },
         {
-            "apiVersion": "2020-04-01",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(parameters('vmName'),'-nic4')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/networkSecurityGroups/',variables('dataNsgName'))]"
-            ],
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Static",
-                            "privateIPAddress": "[parameters('subnet5StartAddress')]",
-                            "subnet": {
-                                "id": "[variables('subnet5Ref')]"
-                            }
-                        }
-                    }
-                ],
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('dataNsgName'))]"
-                },
-                "enableAcceleratedNetworking": "[variables('enableAccelNet')]",
-                "enableIPForwarding": true
-            }
-        },
-        {
             "apiVersion": "2019-12-01",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('vmName')]",
@@ -749,10 +769,10 @@
                 "product": "[variables('imageOffer')]"
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-nic1')]",
-                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-nic2')]",
-                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-nic3')]",
-                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-nic4')]"
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic0')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic1')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic2')]",
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('vmName'),'-Nic3')]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -777,25 +797,25 @@
                             "properties": {
                                 "primary": true
                             },
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-nic1'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic0'))]"
                         },
                         {
                             "properties": {
                                 "primary": false
                             },
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-nic2'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic1'))]"
                         },
                         {
                             "properties": {
                                 "primary": false
                             },
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-nic3'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic2'))]"
                         },
                         {
                             "properties": {
                                 "primary": false
                             },
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-nic4'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic3'))]"
                         }
                     ]
                 },

@@ -6,31 +6,31 @@
             "value": "westeurope"
         },
         "vmName": {
-            "value": "ciscoFTD"
+            "value": "FMC"
         },
-        "billingType": {
-            "value": "ftdv-azure-payg"
-        },
-        "softwareVersionPayg": {
+        "softwareVersion": {
             "value": "67065.0.0"
-        },
-        "ftdAdminPassword": {
-            "value": "Peetuhpanthen0l_75"
-        },
-        "fmcDetails": {
-            "value": "No"
         },
         "adminUsername": {
             "value": "sofia-valles"
         },
+        "FMCAdminPassword": {
+            "value": null
+        },
+        "NTPServer1": {
+            "value": ""
+        },
+        "NTPServer2": {
+            "value": ""
+        },
         "adminPassword": {
-            "value": "Peetuhpanthen0l_75"
+            "value": null
         },
         "authenticationType": {
             "value": "password"
         },
-        "vmLargerSize": {
-            "value": "Standard_D3_v2"
+        "vmSize": {
+            "value": "Standard_D4_v2"
         },
         "storageAccountName": {
             "value": "rgsofiavalles"
@@ -45,10 +45,10 @@
             "value": "RG_Sofia.Valles"
         },
         "publicIPAddressName": {
-            "value": "ciscoftd-ip"
+            "value": "fmc-ip"
         },
         "publicIPDnsLabel": {
-            "value": "ciscoftd-1a396dc4ee"
+            "value": "fmc-d7897ed8a7"
         },
         "publicIPNewOrExisting": {
             "value": "new"
@@ -66,7 +66,7 @@
             "value": "CiscoFTDVNet"
         },
         "virtualNetworkAddressPrefix": {
-            "value": "10.6.0.0/16"
+            "value": "10.13.0.0/16"
         },
         "virtualNetworkNewOrExisting": {
             "value": "new"
@@ -78,37 +78,13 @@
             "value": "subnet1"
         },
         "Subnet1Prefix": {
-            "value": "10.6.0.0/24"
-        },
-        "Subnet2Name": {
-            "value": "subnet2"
-        },
-        "Subnet2Prefix": {
-            "value": "10.6.1.0/24"
-        },
-        "Subnet3Name": {
-            "value": "subnet3"
-        },
-        "Subnet3Prefix": {
-            "value": "10.6.2.0/24"
-        },
-        "Subnet4Name": {
-            "value": "subnet4"
-        },
-        "Subnet4Prefix": {
-            "value": "10.6.3.0/24"
+            "value": "10.13.0.0/24"
         },
         "subnet1StartAddress": {
-            "value": "10.6.0.4"
+            "value": "10.13.0.4"
         },
-        "subnet2StartAddress": {
-            "value": "10.6.1.4"
-        },
-        "subnet3StartAddress": {
-            "value": "10.6.2.4"
-        },
-        "subnet4StartAddress": {
-            "value": "10.6.3.4"
+		"softwareVersion": {
+            "value": "66191.0.0"
         }
     }
 }

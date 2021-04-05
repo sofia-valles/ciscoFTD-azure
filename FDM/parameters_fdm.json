@@ -1,0 +1,114 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "vmName": {
+            "value": "ciscoFTD-FDM"
+        },
+        "billingType": {
+            "value": "ftdv-azure-byol"
+        },
+        "softwareVersionByol": {
+            "value": "67065.0.0"
+        },
+        "ftdAdminPassword": {
+            "value": "Peetuhpanthen0l_75"
+        },
+        "manageLocally": {
+            "value": "Yes"
+        },
+        "adminUsername": {
+            "value": "sofia-valles"
+        },
+        "adminPassword": {
+            "value": "Peetuhpanthen0l_75"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "vmLargerSize": {
+            "value": "Standard_D3_v2"
+        },
+        "storageAccountName": {
+            "value": "rgsofiavalles"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountNewOrExisting": {
+            "value": "new"
+        },
+        "storageAccountRG": {
+            "value": "RG_Sofia.Valles"
+        },
+        "publicIPAddressName": {
+            "value": "ciscoftd-ip"
+        },
+        "publicIPDnsLabel": {
+            "value": "ciscoftd-e983d4a4cc"
+        },
+        "publicIPNewOrExisting": {
+            "value": "new"
+        },
+        "publicIPRG": {
+            "value": "RG_Sofia.Valles"
+        },
+        "publicIPAllocationMethod": {
+            "value": "Static"
+        },
+        "publicIPsku": {
+            "value": "Basic"
+        },
+        "virtualNetworkName": {
+            "value": "CiscoFTDVNet"
+        },
+        "virtualNetworkAddressPrefix": {
+            "value": "10.20.0.0/16"
+        },
+        "virtualNetworkNewOrExisting": {
+            "value": "new"
+        },
+        "virtualNetworkRG": {
+            "value": "RG_Sofia.Valles"
+        },
+        "Subnet1Name": {
+            "value": "management"
+        },
+        "Subnet1Prefix": {
+            "value": "10.20.0.0/24"
+        },
+        "Subnet2Name": {
+            "value": "diagnostic"
+        },
+        "Subnet2Prefix": {
+            "value": "10.20.1.0/24"
+        },
+        "Subnet3Name": {
+            "value": "outside"
+        },
+        "Subnet3Prefix": {
+            "value": "10.20.2.0/24"
+        },
+        "Subnet4Name": {
+            "value": "inside"
+        },
+        "Subnet4Prefix": {
+            "value": "10.20.3.0/24"
+        },
+        "subnet1StartAddress": {
+            "value": "10.20.0.4"
+        },
+        "subnet2StartAddress": {
+            "value": "10.20.1.4"
+        },
+        "subnet3StartAddress": {
+            "value": "10.20.2.4"
+        },
+        "subnet4StartAddress": {
+            "value": "10.20.3.4"
+        }
+    }
+}

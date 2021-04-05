@@ -6,19 +6,25 @@
             "value": "westeurope"
         },
         "vmName": {
-            "value": "ciscoFTD"
+            "value": "FTDv"
         },
         "billingType": {
-            "value": "ftdv-azure-payg"
+            "value": "ftdv-azure-byol"
         },
-        "softwareVersionPayg": {
+        "softwareVersionByol": {
             "value": "67065.0.0"
+        },
+		"manageLocally": {
+            "value": "No"
         },
         "ftdAdminPassword": {
             "value": "Peetuhpanthen0l_75"
         },
-        "fmcDetails": {
-            "value": "No"
+		"fmcIp": {
+            "value": "10.17.0.4"
+        },
+        "fmcRegKey": {
+            "value": "regsleutel"
         },
         "adminUsername": {
             "value": "sofia-valles"
@@ -48,7 +54,7 @@
             "value": "ciscoftd-ip"
         },
         "publicIPDnsLabel": {
-            "value": "ciscoftd-62871a5cf8"
+            "value": "ciscoftd-e983d4a4cc"
         },
         "publicIPNewOrExisting": {
             "value": "new"
@@ -66,7 +72,7 @@
             "value": "CiscoFTDVNet"
         },
         "virtualNetworkAddressPrefix": {
-            "value": "10.20.0.0/16"
+            "value": "10.13.0.0/16"
         },
         "virtualNetworkNewOrExisting": {
             "value": "new"
@@ -75,40 +81,40 @@
             "value": "RG_Sofia.Valles"
         },
         "Subnet1Name": {
-            "value": "subnet1"
+            "value": "management"
         },
         "Subnet1Prefix": {
-            "value": "10.20.0.0/24"
+            "value": "10.13.0.0/24"
         },
         "Subnet2Name": {
-            "value": "subnet2"
+            "value": "diagnostic"
         },
         "Subnet2Prefix": {
-            "value": "10.20.1.0/24"
+            "value": "10.13.1.0/24"
         },
         "Subnet3Name": {
-            "value": "subnet3"
+            "value": "outside"
         },
         "Subnet3Prefix": {
-            "value": "10.20.2.0/24"
+            "value": "10.13.2.0/24"
         },
         "Subnet4Name": {
-            "value": "subnet4"
+            "value": "inside"
         },
         "Subnet4Prefix": {
-            "value": "10.20.3.0/24"
+            "value": "10.13.3.0/24"
         },
         "subnet1StartAddress": {
-            "value": "10.20.0.4"
+            "value": "10.13.0.4"
         },
         "subnet2StartAddress": {
-            "value": "10.20.1.4"
+            "value": "10.13.1.4"
         },
         "subnet3StartAddress": {
-            "value": "10.20.2.4"
+            "value": "10.13.2.4"
         },
         "subnet4StartAddress": {
-            "value": "10.20.3.4"
+            "value": "10.13.3.4"
         }
     }
 }
