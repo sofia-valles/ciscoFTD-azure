@@ -9,17 +9,6 @@
                 "description": "Deployment location for VM. (example: West US)"
             }
         },
-		"billingType": {
-            "type": "string",
-            "defaultValue": "ftdv-azure-byol",
-            "allowedValues": [
-                "ftdv-azure-byol",
-                "ftdv-azure-payg"
-            ],
-            "metadata": {
-                "description": "Billing type to use."
-            }
-        },
         "availSet": {
             "type": "string",
             "defaultValue": "answami-ngfw-avs",
@@ -175,6 +164,13 @@
                 "description": "SSH Key for the virtual machine - if ssh key authentication was chosen"
             }
         },
+        "customData": {
+            "type": "string",
+            "defaultValue": "{\"AdminPassword\": \"Sw10401040\",\"Hostname\": \"FTD\",\"FmcIp\": \"10.0.0.10\",\"FmcRegKey\":\"7575\",\"FmcNatId\":\"7575\"}",
+            "metadata": {
+                "description": "Custom Data passed to the FTDv."
+            }
+        },
         "vmName": {
             "type": "string",
             "defaultValue": "answami-ngfwv100",
@@ -270,9 +266,8 @@
         }
     },
     "variables": {
-		"imagePublisher": "cisco",
-        "imageOffer": "cisco-ftdv",
-        "imageSKU": "[parameters('billingType')]",
+        "osDiskVhdName": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/',parameters('vmName'),'osDisk.vhd')]",
+        "OSDiskName": "[concat(parameters('vmName'), '-disk')]",
         "vmStorageAccountContainerName": "vhds",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', parameters('Subnet1Name'))]",
@@ -300,12 +295,14 @@
                         }
                     ]
                 }
-            }
+            },
+            "customData": "[base64(parameters('customData'))]"
         },
         "osProfilepassword": {
             "computername": "[parameters('vmName')]",
             "adminUsername": "[parameters('adminUsername')]",
-            "adminPassword": "[parameters('adminPassword')]"
+            "adminPassword": "[parameters('adminPassword')]",
+            "customData": "[base64(parameters('customData'))]"
         }
     },
     "resources": [
@@ -677,9 +674,9 @@
             "name": "[parameters('vmName')]",
             "location": "[parameters('location')]",
             "plan": {
-                "name": "[variables('imageSKU')]",
-                "publisher": "[variables('imagePublisher')]",
-                "product": "[variables('imageOffer')]"
+                "name": "ftdv-azure-byol",
+                "product": "cisco-ftdv",
+                "publisher": "cisco"
             },
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', 'SettingUpStorageAccount')]",
@@ -698,22 +695,19 @@
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "[variables('imagePublisher')]",
-                        "offer": "[variables('imageOffer')]",
-                        "sku": "[variables('imageSKU')]",
+                        "publisher": "cisco",
+                        "offer": "cisco-ftdv",
+                        "sku": "ftdv-azure-byol",
                         "version": "latest"
                     },
                     "osDisk": {
-						"name": "osDisk-ftd",
-                        "createOption": "FromImage"
-                    },
-					"dataDisks": [
-						{
-							"diskSizeGB": 1023,
-							"lun": 0,
-							"createOption": "Empty"
-						}
-					]		
+                        "name": "[concat(parameters('vmName'),'-osDisk')]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[variables('osDiskVhdName')]"
+                        }
+                    }
                 },
                 "networkProfile": {
                     "networkInterfaces": [

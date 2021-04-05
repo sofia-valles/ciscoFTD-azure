@@ -5,6 +5,9 @@
     "location": {
       "value": "West Europe"
     },
+	"billingType": {
+            "value": "ftdv-azure-payg"
+    },
     "availSet": {
       "value": "ftd-avs"
     },
